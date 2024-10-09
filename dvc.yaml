@@ -1,16 +1,16 @@
 stages:
   load_data:
-    cmd: python refactoring/load_data.py ${data.filepath} ${data.processed}train_test_data.csv
+    cmd: python src/load_data.py ${data.filepath} ${data.processed}train_test_data.csv
     deps:
-      - refactoring/load_data.py
+      - src/load_data.py
       - ${data.filepath}
     outs:
       - ${data.processed}train_test_data.csv
 
   preprocess:
-    cmd: python refactoring/preprocess_data.py ${data.processed}train_test_data.csv ${data.processed}X_train.csv ${data.processed}X_test.csv ${data.processed}y_train.csv ${data.processed}y_test.csv
+    cmd: python src/preprocess_data.py ${data.processed}train_test_data.csv ${data.processed}X_train.csv ${data.processed}X_test.csv ${data.processed}y_train.csv ${data.processed}y_test.csv
     deps:
-      - refactoring/preprocess_data.py
+      - src/preprocess_data.py
       - ${data.processed}train_test_data.csv
     outs:
       - ${data.processed}X_train.csv
@@ -19,18 +19,18 @@ stages:
       - ${data.processed}y_test.csv
 
   train:
-    cmd: python refactoring/train.py ${data.processed}X_train.csv ${data.processed}y_train.csv ${data.models}model.pkl
+    cmd: python src/train.py ${data.processed}X_train.csv ${data.processed}y_train.csv ${data.models}model.pkl
     deps:
-      - refactoring/train.py
+      - src/train.py
       - ${data.processed}X_train.csv
       - ${data.processed}y_train.csv
     outs:
       - ${data.models}model.pkl
 
   evaluate:
-    cmd: python refactoring/evaluate.py ${data.models}model.pkl ${data.processed}X_test.csv ${data.processed}y_test.csv
+    cmd: python src/evaluate.py ${data.models}model.pkl ${data.processed}X_test.csv ${data.processed}y_test.csv
     deps:
-      - refactoring/evaluate.py
+      - src/evaluate.py
       - ${data.models}model.pkl
       - ${data.processed}X_test.csv
       - ${data.processed}y_test.csv
